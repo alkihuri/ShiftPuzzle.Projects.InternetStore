@@ -42,7 +42,12 @@ namespace MyStore.Services
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
-        {
+        { 
+            Product a = new Product();
+            a.Id = 1;
+            a.Name = "Test";
+            Console.Write("ASDSADASD");
+            return   a;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 await connection.OpenAsync();
