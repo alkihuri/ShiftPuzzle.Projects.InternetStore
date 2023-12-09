@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyStore.Services; // Убедитесь, что ваш namespace указан правильно
+using MyStore.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace MyStore
 {
@@ -20,10 +23,9 @@ namespace MyStore
         {
             services.AddControllers();
 
-            // Регистрация ProductService в системе Dependency Injection
-            services.AddSingleton<ProductService>();
-
-            // Добавьте другие сервисы, необходимые вашему приложению
+            services.AddDbContext<MyStoreContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); 
+            services.AddScoped<ProductService>();
         }
 
         // Этот метод вызывается средой выполнения. Используйте его для настройки конвейера HTTP-запросов.
@@ -42,8 +44,7 @@ namespace MyStore
             {
                 endpoints.MapControllers();
             });
-
-            // Добавьте другое middleware, если это необходимо
+ 
         }
     }
 }

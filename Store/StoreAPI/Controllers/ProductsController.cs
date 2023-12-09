@@ -20,7 +20,7 @@ public class ProductsController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Product>> GetProducts()
     {
-        var products = _productService.GetAllProducts();
+        var products = _productService.GetAllProductsAsync();
         return Ok(products);
     }
 
@@ -28,7 +28,7 @@ public class ProductsController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult<Product> GetProduct(int id)
     {
-        var product = _productService.GetProductById(id);
+        var product = _productService.GetProductByIdAsync(id);
 
         if (product == null)
         {
@@ -42,7 +42,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public ActionResult<Product> PostProduct(Product product)
     {
-        _productService.AddProduct(product);
+        _productService.AddProductAsync(product);
         return CreatedAtAction("GetProduct", new { id = product.Id }, product);
     }
 
@@ -55,7 +55,7 @@ public class ProductsController : ControllerBase
             return BadRequest();
         }
 
-        _productService.UpdateProduct(product);
+        _productService.UpdateProductAsync(product);
 
         return NoContent();
     }
@@ -64,13 +64,13 @@ public class ProductsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteProduct(int id)
     {
-        var product = _productService.GetProductById(id);
+        var product = _productService.GetProductByIdAsync(id);
         if (product == null)
         {
             return NotFound();
         }
 
-        _productService.DeleteProduct(product);
+        _productService.DeleteProductAsync(id);
 
         return NoContent();
     }
