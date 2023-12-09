@@ -21,7 +21,7 @@ namespace MyStore.Services
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products(id);
         }
 
         public async Task AddProductAsync(Product product)

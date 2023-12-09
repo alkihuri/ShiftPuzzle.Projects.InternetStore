@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using MyStore.Models; // Предполагается, что у вас есть модель Product
-using MyStore.Services; // Предполагается, что у вас есть сервис ProductService
+using MyStore.Models; 
+using MyStore.Services;  
 
 
 
@@ -73,5 +73,29 @@ public class ProductsController : ControllerBase
         _productService.DeleteProductAsync(id);
 
         return NoContent();
+    }
+
+  [HttpGet("random")]
+public async Task<IActionResult> AddRandomProduct()
+{
+    // Генерация случайных данных (здесь просто для примера)
+    var random = new Random();
+    var product = new Product
+    {
+        Name = "Random Product " + random.Next(1, 1000),
+        Description = "Random Description",
+        Price = random.Next(10, 100)
+    };
+
+    // Добавление продукта в базу данных
+    await _productService.AddProductAsync(product);
+
+    return Ok(product);
+}
+    [HttpPost("add")]
+    public async Task<IActionResult> AddProduct([FromBody] Product product)
+    {
+        await _productService.AddProductAsync(product);
+        return Ok(product);
     }
 }

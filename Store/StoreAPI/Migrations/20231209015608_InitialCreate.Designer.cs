@@ -11,7 +11,7 @@ using MyStore.Models;
 namespace StoreAPI.Migrations
 {
     [DbContext(typeof(MyStoreContext))]
-    [Migration("20231209010025_InitialCreate")]
+    [Migration("20231209015608_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,8 +40,8 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
