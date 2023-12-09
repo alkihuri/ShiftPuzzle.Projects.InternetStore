@@ -21,11 +21,9 @@ namespace MyStore
         // Этот метод вызывается средой выполнения. Используйте его для добавления сервисов в контейнер.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
-            services.AddDbContext<MyStoreContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); 
-            services.AddScoped<ProductService>();
+            services.AddControllers(); 
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddSingleton<ProductService>(provider => new ProductService(connectionString));
         }
 
         // Этот метод вызывается средой выполнения. Используйте его для настройки конвейера HTTP-запросов.
