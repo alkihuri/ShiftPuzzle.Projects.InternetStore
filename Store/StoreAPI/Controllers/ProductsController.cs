@@ -1,34 +1,41 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using MyStore.Models; 
-using MyStore.Services;  
-
-
+using System.IO;
+using System.Text.Json;
+using MyStore.Models;
 
 [Route("api/[controller]")]
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    private readonly ProductService _productService;
-
-    public ProductsController(ProductService productService)
-    {
-        _productService = productService;
-    }
+    private readonly string _filePath = "products.json";
 
     // GET: api/products
     [HttpGet]
     public ActionResult<IEnumerable<Product>> GetProducts()
     {
-        var products = _productService.GetAllProductsAsync();
+        var products = ReadFromFile();
         return Ok(products);
     }
+  // GET:  
+    [HttpGet("random")]
+    public ActionResult<Product> RandomFiil()
+    {
+        var product = new Product();
+        product.Id = 999;
+        product.Name = "Test";
+        var products = ReadFromFile();
+        products.Add(product);
+        WriteToFile(products);
+        return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+    }
 
-    // GET: api/products/5
+    // GET:  
     [HttpGet("{id}")]
     public ActionResult<Product> GetProduct(int id)
     {
-        var product = _productService.GetProductByIdAsync(id);
+        var products = ReadFromFile();
+        var product = products.FirstOrDefault(p => p.Id == id);
 
         if (product == null)
         {
@@ -42,60 +49,27 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public ActionResult<Product> PostProduct(Product product)
     {
-        _productService.AddProductAsync(product);
+        var products = ReadFromFile();
+        products.Add(product);
+        WriteToFile(products);
         return CreatedAtAction("GetProduct", new { id = product.Id }, product);
     }
 
-    // PUT: api/products/5
-    [HttpPut("{id}")]
-    public IActionResult PutProduct(int id, Product product)
+     
+    private List<Product> ReadFromFile()
     {
-        if (id != product.Id)
+        if (!System.IO.File.Exists(_filePath))
         {
-            return BadRequest();
+            return new List<Product>();
         }
 
-        _productService.UpdateProductAsync(product);
-
-        return NoContent();
+        var json = System.IO.File.ReadAllText(_filePath);
+        return JsonSerializer.Deserialize<List<Product>>(json) ?? new List<Product>();
     }
 
-    // DELETE: api/products/5
-    [HttpDelete("{id}")]
-    public IActionResult DeleteProduct(int id)
+    private void WriteToFile(List<Product> products)
     {
-        var product = _productService.GetProductByIdAsync(id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-
-        _productService.DeleteProductAsync(id);
-
-        return NoContent();
-    }
-
-  [HttpGet("random")]
-public async Task<IActionResult> AddRandomProduct()
-{
-    // Генерация случайных данных (здесь просто для примера)
-    var random = new Random();
-    var product = new Product
-    {
-        Name = "Random Product " + random.Next(1, 1000),
-        Description = "Random Description",
-        Price = random.Next(10, 100)
-    };
-
-    // Добавление продукта в базу данных
-    await _productService.AddProductAsync(product);
-
-    return Ok(product);
-}
-    [HttpPost("add")]
-    public async Task<IActionResult> AddProduct([FromBody] Product product)
-    {
-        await _productService.AddProductAsync(product);
-        return Ok(product);
+        var json = JsonSerializer.Serialize(products);
+        System.IO.File.WriteAllText(_filePath, json);
     }
 }
