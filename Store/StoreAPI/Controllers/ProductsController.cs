@@ -17,17 +17,28 @@ public class ProductsController : ControllerBase
         var products = ReadFromFile();
         return Ok(products);
     }
-  // GET:  
-    [HttpGet("random")]
-    public ActionResult<Product> RandomFiil()
+  [HttpGet("random")]
+    public ActionResult<IEnumerable<Product>> RandomFill()
     {
-        var product = new Product();
-        product.Id = 999;
-        product.Name = "Test";
+        var random = new Random();
         var products = ReadFromFile();
-        products.Add(product);
+
+        for (int i = 0; i < 10; i++)
+        {
+            var product = new Product
+            {
+                Id = random.Next(1000, 9999), // Генерация случайного ID
+                Name = "Product " + random.Next(1, 100), // Случайное название продукта
+                Price = random.Next(10, 500) // Случайная цена
+                // Добавьте другие необходимые поля
+            };
+
+            products.Add(product);
+        }
+
         WriteToFile(products);
-        return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+
+        return Ok(products);
     }
 
     // GET:  
@@ -36,6 +47,21 @@ public class ProductsController : ControllerBase
     {
         var products = ReadFromFile();
         var product = products.FirstOrDefault(p => p.Id == id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(product);
+    }
+
+     // GET:  
+    [HttpGet("GetByName/{name}")]
+    public ActionResult<Product> GetProductByName(string name)
+    {
+        var products = ReadFromFile();
+        var product = products.FirstOrDefault(p => p.Name == name);
 
         if (product == null)
         {
@@ -54,7 +80,7 @@ public class ProductsController : ControllerBase
         WriteToFile(products);
         return CreatedAtAction("GetProduct", new { id = product.Id }, product);
     }
-
+    
      
     private List<Product> ReadFromFile()
     {

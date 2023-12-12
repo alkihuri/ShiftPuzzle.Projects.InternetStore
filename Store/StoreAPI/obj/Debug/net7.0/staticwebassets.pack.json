@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\alkih\\Documents\\GitHub\\ShiftPuzzle.Projects.InternetStore\\Store\\StoreAPI\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.StoreAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.StoreAPI.props",
+      "PackagePath": "build\\StoreAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.StoreAPI.props",
+      "PackagePath": "buildMultiTargeting\\StoreAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.StoreAPI.props",
+      "PackagePath": "buildTransitive\\StoreAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Админ панель модного бутика "Дядя Стёпа"</h2>
+
+<!-- Таблица для продуктов -->
+<button id="refreshTable">Обновить таблицу</button>
+<table id="productsTable">
+    <tr>
+        <th>АРТИКУЛ</th>
+        <th>НАЗВАНИЕ</th>
+        <th>ОПИСАНИЕ</th>
+        <th>ССЫЛКА НА ИЗОБРАЖЕНИЕ</th>
+        <th>ЦЕНА</th>
+    </tr>
+    <!-- Содержимое таблицы будет добавлено здесь -->
+</table>
+
+<!-- Форма для добавления нового продукта -->
+<h3>Добавить новый продукт в мир моды</h3>
+<form id="newProductForm">
+    <label for="productName">НАЗВАНИЕ:</label><br>
+    <input type="text" id="productName" name="productName"><br>
+    <label for="productDescription">ОПИСАНИЕ:</label><br>
+    <input type="text" id="productDescription" name="productDescription"><br>
+    <label for="productImageLink">ССЫЛКА:</label><br>
+    <input type="text" id="productImageLink" name="productImageLink"><br>
+    <label for="productPrice">ЦЕНА:</label><br>
+    <input type="number" id="productPrice" name="productPrice"><br><br>
+    <input type="submit" value="Добавить">
+</form>
+
+<script>
+    document.getElementById("refreshTable").onclick = function() {
+        fetch('http://localhost:5084/api/products')
+            .then(response => response.json())
+            .then(data => updateTable(data));
+    };
+
+    document.getElementById("newProductForm").onsubmit = function(event) {
+        event.preventDefault();
+        const product = {
+            name: document.getElementById("productName").value,
+            description: document.getElementById("productDescription").value,
+            imageLink: document.getElementById("productImageLink").value,
+            price: parseInt(document.getElementById("productPrice").value, 10)
+        };
+
+        fetch('http://localhost:5084/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(product)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Product added successfully!');
+            document.getElementById("newProductForm").reset();
+            document.getElementById("refreshTable").click();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
+    function updateTable(products) {
+        const table = document.getElementById("productsTable");
+        // Очистить текущее содержимое таблицы, кроме заголовка
+        table.innerHTML = table.rows[0].outerHTML;
+
+        // Добавить последние 10 продуктов в таблицу
+        products.slice(-10).forEach(product => {
+            const row = table.insertRow(-1);
+            row.insertCell(0).innerHTML = product.id;
+            row.insertCell(1).innerHTML = product.name;
+            row.insertCell(2).innerHTML = product.description;
+            row.insertCell(3).innerHTML = product.imageLink;
+            row.insertCell(4).innerHTML = product.price;
+        });
+    }
+</script>
+
+</body>
+</html>

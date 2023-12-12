@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "T3u8kTLVvvyE9i3nFytGB55NAk8LfSJCgxIltVfXP9U=",
+  "Hash": "eR4q0IEwL3pz193XM/BCu+B48WkH+fCGPN+RTZSATLY=",
   "Source": "StoreAPI",
   "BasePath": "_content/StoreAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "StoreAPI\\wwwroot",
+      "Source": "StoreAPI",
+      "ContentRoot": "C:\\Users\\alkih\\Documents\\GitHub\\ShiftPuzzle.Projects.InternetStore\\Store\\StoreAPI\\wwwroot\\",
+      "BasePath": "_content/StoreAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\alkih\\Documents\\GitHub\\ShiftPuzzle.Projects.InternetStore\\Store\\StoreAPI\\wwwroot\\index.html",
+      "SourceId": "StoreAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\alkih\\Documents\\GitHub\\ShiftPuzzle.Projects.InternetStore\\Store\\StoreAPI\\wwwroot\\",
+      "BasePath": "_content/StoreAPI",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ]
 }
